@@ -1,38 +1,19 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import axios from 'axios'
-
-function useTodos(){
-  const [todos, setTodos] = useState([])
-
-  useEffect(()=>{
-    axios.get("https://sum-server.100xdevs.com/todos")
-      .then(res=>{
-        setTodos(res.data.todos)
-      })
-  },[])
-  return todos;
-
-}
+import {useIsOnline} from './hooks/IsOnline'
+import { useMousePointer } from './hooks/MousePointer';
 
 
 function App() {
 
-  const todos = useTodos();
+const isOnline = useIsOnline();
+const mousePointer = useMousePointer();
 
   return (
     <>
-     {todos.map(todo=><Component props={todo}/>)}
+     {isOnline?"Yay you're online":"Check your connection"}
+     <br/>
+     Your mouse position is {mousePointer.x} {mousePointer.y}
     </>
   )
 }
-
-function Component({props}){
-  return <div>
-    <h2>{props.title}</h2>
-    <br/>
-    <h3>{props.description}</h3>
-  </div>
-}
-
 export default App
